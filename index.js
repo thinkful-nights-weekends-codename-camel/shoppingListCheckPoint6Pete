@@ -81,14 +81,24 @@ function handleItemCheckClicked() {
   });
 }
 
+function removeItemFromStore(itemId){
+    // 1. identify the index of the object from STORE to be removed
+    const itemIndex = STORE.findIndex(function(item) {
+        return item.id === itemId;
+    })
+    // 2. remove the item from the array in the global scope
+    STORE.splice(itemIndex,1);
+}
 
 function handleDeleteItemClicked() {
   // this function will be responsible for when users want to delete a shopping list item
   // 1. have an event listener for when the user clicks the delete button
   $('.js-shopping-list').on('click', '.js-item-delete', function(event){
-  // 2. remove the item from the shopping list
-    event.preventDefault();
-    $(this).closest('li').remove();
+  // 2. remove the item from the shopping list and the STORE array
+    const itemIndex = getItemIdFromElement(event.currentTarget);
+    removeItemFromStore(itemIndex);
+  // 3. render the shopping list
+    renderShoppingList();
   });
   console.log('`handleDeleteItemClicked` ran')
 }
